@@ -26,43 +26,20 @@ public class BlackJack {
     }
 
     // Создаем колоду карт.
-    public static ArrayList<String> deckOfCards() {
-//        for(int i = 0; i < Card.cardValues.length; i++)
-//        {
-//            for(int j = 0; j < Card.cardTypes.length; j++)
-//            {
-//                cards.add(new Card(Card.cardValues[i] + " " + Card.cardTypes[j]));
-//            }
-//
-//        }
+    public static ArrayList<Card> deckOfCards() {
+        for(int i = 0; i < Card.cardValues.length; i++)
+        {
+            for(int j = 0; j < Card.cardTypes.length; j++)
+            {
+                cards.add(new Card(Card.cardValues[i] + " " + Card.cardTypes[j]));
+            }
 
-
-        ArrayList<String> cardValue = new ArrayList<String>(Arrays.asList("Двойка", "Тройка", "Четверка", "Пятерка", "Шестерка", "Семерка", "Восьмерка", "Девятка", "Десятка", "Валет", "Дама", "Король", "Туз"));
-        ArrayList<String> spadesDeck = new ArrayList<String>();
-        ArrayList<String> heartsDeck = new ArrayList<String>();
-        ArrayList<String> diamondsDeck = new ArrayList<String>();
-        ArrayList<String> clubsDeck = new ArrayList<String>();
-        String spades = "Пик";
-        String hearts = "Червей";
-        String diamonds = "Бубей";
-        String clubs = "Треф";
-        for (int i = 0; i < cardValue.size(); i++) {
-            spadesDeck.add(i, cardValue.get(i) + " " + spades);
-            heartsDeck.add(i, cardValue.get(i) + " " + hearts);
-            diamondsDeck.add(i, cardValue.get(i) + " " + diamonds);
-            clubsDeck.add(i, cardValue.get(i) + " " + clubs);
         }
-        ArrayList<String> deckOfCards = new ArrayList<String>();
-        deckOfCards.addAll(spadesDeck);
-        deckOfCards.addAll(diamondsDeck);
-        deckOfCards.addAll(heartsDeck);
-        deckOfCards.addAll(clubsDeck);
-
-        return deckOfCards;
+        return cards;
     }
 
-    //Рандомизатор, добавляющий случайные карты из колоды в массивы карт дилера или игрока.
-    private static ArrayList<String> cardRandomizer(int z, ArrayList<String> playerOrDealerCards, ArrayList<String> deckOfCards)
+    //Рандомизатор, добавляющий случайные карты в массивы карт дилера или игрока, и удаляющий уже розданные карты из колоды.
+    private static ArrayList<String> cardRandomizer(int z, ArrayList<String> playerOrDealerCards, ArrayList<Card> deckOfCards)
     {
         Random random = new Random();
         for (int i = 0; i < z; i++) {
@@ -140,7 +117,7 @@ public class BlackJack {
         System.out.println("");
         System.out.println("Текущий баланс: " + startCapital);
         System.out.println("Сделайте вашу ставку. Минимальная ставка - 10. Максимальная ставка - 500.");
-        ArrayList<String> deckOfCards = deckOfCards();
+        ArrayList<Card> deckOfCards = deckOfCards();
         ArrayList<String> givenCards = new ArrayList<String>();
         ArrayList<String> dealerCards = new ArrayList<>();
         int playerPoints = 0;
