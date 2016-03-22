@@ -27,14 +27,14 @@ public class BlackJack {
 
     // Создаем колоду карт.
     public static ArrayList<String> deckOfCards() {
-        for(int i = 0; i < Card.cardValues.length; i++)
-        {
-            for(int j = 0; j < Card.cardTypes.length; j++)
-            {
-                cards.add(new Card(Card.cardValues[i] + " " + Card.cardTypes[j]));
-            }
-
-        }
+//        for(int i = 0; i < Card.cardValues.length; i++)
+//        {
+//            for(int j = 0; j < Card.cardTypes.length; j++)
+//            {
+//                cards.add(new Card(Card.cardValues[i] + " " + Card.cardTypes[j]));
+//            }
+//
+//        }
 
 
         ArrayList<String> cardValue = new ArrayList<String>(Arrays.asList("Двойка", "Тройка", "Четверка", "Пятерка", "Шестерка", "Семерка", "Восьмерка", "Девятка", "Десятка", "Валет", "Дама", "Король", "Туз"));
@@ -74,37 +74,35 @@ public class BlackJack {
         return playerOrDealerCards;
     }
 
-    //Удаление карт из колоды, которые были розданы.
-    private static ArrayList<String> optimizationForDeckOfCards(ArrayList<String> deckOfCards, ArrayList<String> playerOrDealerCards) {
-        for (String z : playerOrDealerCards) {
-            for (int i = 0; i < deckOfCards.size(); i++) {
-                if (z.equals(deckOfCards.get(i)))
-                    deckOfCards.remove(i);
-            }
-        }
-        return deckOfCards;
-    }
-
     //Проверка на соответствие ставки, внесенной игроком наложенным ограничениям;
     //В случае принятия ставки возвращается баланс после ее вычета.
-    public static int moneyAfterBetsChecking(int bet, int money) throws IOException {
+    public static ArrayList<Integer> moneyAfterBetsChecking(int bet, int money) throws IOException {
+        ArrayList<Integer> moneyAndBetValuesAfterBetsChecking = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        for (; bet < 10 || bet > 500 || bet > money; )
+        if (bet >= 10 && bet <= 500 && bet <= money)
         {
-            System.out.println("Минимальная ставка - 10. Максимальная ставка - 500. Ставка не должна превышать текущий баланс.");
-            System.out.println("Введите, пожалуйста, приемлемую сумму: ");
-            int betNext = Integer.parseInt(reader.readLine());
-            if (betNext >= 10 && betNext <= 500 && betNext <= money) {
-                money -= betNext;
-                bet = betNext;
-                break;
+            money -= bet;
+            moneyAndBetValuesAfterBetsChecking.add(0, bet);
+            moneyAndBetValuesAfterBetsChecking.add(1, money);
+        }
+        outer: if (bet < 10 || bet > 500 || bet > money)
+        {
+            for (;;)
+            {
+                System.out.println("Минимальная ставка - 10. Максимальная ставка - 500. Ставка не должна превышать текущий баланс.");
+                System.out.println("Введите, пожалуйста, приемлемую сумму: ");
+                int betNext = Integer.parseInt(reader.readLine());
+                if (betNext >= 10 && betNext <= 500 && betNext <= money)
+                {
+                    money -= betNext;
+                    moneyAndBetValuesAfterBetsChecking.add(0, betNext);
+                    moneyAndBetValuesAfterBetsChecking.add(1, money);
+                    break outer;
+                }
+
             }
         }
-
-        if (bet >= 10 && bet <= 500 && bet <= money)
-            money -= bet;
-
-        return money;
+        return moneyAndBetValuesAfterBetsChecking;
     }
 
     private static int pointsCounting(int points, String z)
@@ -150,15 +148,16 @@ public class BlackJack {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int bet = Integer.parseInt(reader.readLine());
-        int money = moneyAfterBetsChecking(bet, startCapital);
+        bet = moneyAfterBetsChecking(bet, startCapital).get(0);
+        int money = moneyAfterBetsChecking(bet, startCapital).get(1);
         System.out.println("Текущий баланс: " + money + ". Ваша ставка: " + bet);
-        int realBet = bet;
+        int realBet = bet; // Из-за обилия переменных с разными именами вводятся переменные realBet и realMoney для унификации и удобочитаемости кода.
         int realMoney = money;
 
         givenCards = cardRandomizer(2, givenCards, deckOfCards);
-        deckOfCards = optimizationForDeckOfCards(deckOfCards, givenCards);
+//        deckOfCards = optimizationForDeckOfCards(deckOfCards, givenCards);
         dealerCards = cardRandomizer(1, dealerCards, deckOfCards);
-        deckOfCards = optimizationForDeckOfCards(deckOfCards, dealerCards);
+//        deckOfCards = optimizationForDeckOfCards(deckOfCards, dealerCards);
 
         System.out.println("Ваши карты:");
         for (int i = 0; i < 2; i++)
@@ -201,7 +200,7 @@ public class BlackJack {
                 String moreCardsAnswer = reader.readLine();
                 if (moreCardsAnswer.equals("Да") || moreCardsAnswer.equals("да")) {
                     givenCards = cardRandomizer(1, givenCards, deckOfCards);
-                    deckOfCards = optimizationForDeckOfCards(deckOfCards, givenCards);
+//                    deckOfCards = optimizationForDeckOfCards(deckOfCards, givenCards);
                     System.out.println("Ваши карты: ");
                     for (int i = givenCards.size() - 1; i < givenCards.size(); i++)
                         playerPoints = pointsCounting(playerPoints, givenCards.get(i));
@@ -216,7 +215,7 @@ public class BlackJack {
                     for (; dealerPoints < 17; )
                     {
                         dealerCards = cardRandomizer(1, dealerCards, deckOfCards);
-                        deckOfCards = optimizationForDeckOfCards(deckOfCards, dealerCards);
+//                        deckOfCards = optimizationForDeckOfCards(deckOfCards, dealerCards);
                         for (int i = dealerCards.size() - 1; i < dealerCards.size(); i++)
                             dealerPoints = pointsCounting(dealerPoints, dealerCards.get(i));
                     }

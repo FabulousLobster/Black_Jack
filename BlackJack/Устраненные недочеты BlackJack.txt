@@ -1,0 +1,34 @@
+//    //Удаление карт из колоды, которые были розданы.
+//    private static ArrayList<String> optimizationForDeckOfCards(ArrayList<String> deckOfCards, ArrayList<String> playerOrDealerCards) {
+//        for (String z : playerOrDealerCards) {
+//            for (int i = 0; i < deckOfCards.size(); i++) {
+//                if (z.equals(deckOfCards.get(i)))
+//                    deckOfCards.remove(i);
+//            }
+//        }
+//        return deckOfCards;
+//    }
+
+
+        ArrayList<String> cardValue = new ArrayList<String>(Arrays.asList("Двойка", "Тройка", "Четверка", "Пятерка", "Шестерка", "Семерка", "Восьмерка", "Девятка", "Десятка", "Валет", "Дама", "Король", "Туз"));
+        ArrayList<String> spadesDeck = new ArrayList<String>();
+        ArrayList<String> heartsDeck = new ArrayList<String>();
+        ArrayList<String> diamondsDeck = new ArrayList<String>();
+        ArrayList<String> clubsDeck = new ArrayList<String>();
+        String spades = "Пик";
+        String hearts = "Червей";
+        String diamonds = "Бубей";
+        String clubs = "Треф";
+        for (int i = 0; i < cardValue.size(); i++) {
+            spadesDeck.add(i, cardValue.get(i) + " " + spades);
+            heartsDeck.add(i, cardValue.get(i) + " " + hearts);
+            diamondsDeck.add(i, cardValue.get(i) + " " + diamonds);
+            clubsDeck.add(i, cardValue.get(i) + " " + clubs);
+        }
+        ArrayList<String> deckOfCards = new ArrayList<String>();
+        deckOfCards.addAll(spadesDeck);
+        deckOfCards.addAll(diamondsDeck);
+        deckOfCards.addAll(heartsDeck);
+        deckOfCards.addAll(clubsDeck);
+
+        return deckOfCards;
